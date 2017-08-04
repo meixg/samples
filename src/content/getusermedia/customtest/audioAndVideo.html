@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+ *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+-->
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="description" content="WebRTC code samples">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta id="theme-color" name="theme-color" content="#ffffff">
+
+    <base target="_blank">
+
+    <title>getUserMedia</title>
+</head>
+
+<body>
+    <video id="gum-local" autoplay style="width: 100%;"></video>
+    <script>
+        var video = document.querySelector('video');
+
+        // Put variables in global scope to make them available to the browser console.
+        var constraints = window.constraints = {
+            audio: false,
+            video: true
+        };
+
+        function handleSuccess(stream) {
+            alert('success');
+            var videoTracks = stream.getVideoTracks();
+            console.log('Got stream with constraints:', constraints);
+            console.log('Using video device: ' + videoTracks[0].label);
+            stream.oninactive = function () {
+                console.log('Stream inactive');
+            };
+            window.stream = stream; // make variable available to browser console
+            video.srcObject = stream;
+        }
+        alert(navigator.mediaDevices);
+        try {
+            navigator.mediaDevices.getUserMedia(constraints).
+                then(function (e) {
+                    alert(e);
+                }).catch(function (e) {
+                    alert(e);
+                });
+        }
+        catch (e) {
+            alert(e);
+        }
+    </script>
+</body>
+
+</html>
